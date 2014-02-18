@@ -37,6 +37,42 @@ function network.primary_address()
 	return ip.IPv4(ipv4_template), ip.IPv6(ipv6_template) 
 end
 
+function network.generate_host(ipprefix, hexsuffix)
+    -- use only the 8 rightmost nibbles for IPv4, or 32 nibbles for IPv6
+    hexsuffix = hexsuffix:sub((ipprefix[1] == 4) and -8 or -32)
+
+    -- convert hexsuffix into a cidr instance, using same prefix and family of ipprefix
+    local ipsuffix = ip.Hex(hexsuffix, ipprefix:prefix(), ipprefix[1])
+
+    local ipaddress = ipprefix
+    -- if it's a network prefix, fill in host bits with ipsuffix
+    if ipprefix:equal(ipprefix:network()) then
+        for i in ipairs(ipprefix[2]) do
+            -- reset ipsuffix netmask bits to 0
+            ipsuffix[2][i] = bit.bxor(ipsuffix[2][i],ipsuffix:network()[2][i])
+            -- fill in ipaddress host part, with ipsuffix bits
+            ipaddress[2][i] = bit.bor(ipaddress[2][i],ipsuffix[2][i])
+        end
+    end
+
+    return ipaddress
+end
+
+function network.generate_address(p, n)
+    local id = n
+    local m4, m5, m6 = node_id()
+    local n1, n2, n3 = network_id()
+    local ipv4_template = assert(uci:get("lime", "network", "ipv4_net"))
+    local ipv6_template = assert(uci:get("lime", "network", "ipv6_net"))
+
+    ipv6_template = ipv6_template:gsub("N1", hex(n1)):gsub("N2", hex(n2)):gsub("N3", hex(n3))
+    ipv4_template = ipv4_template:gsub("N1", n1):gsub("N2", n2):gsub("N3", n3)
+
+    hexsuffix = hex((m4 * 256*256 + m5 * 256 + m6) + id)
+    return network.generate_host(ip.IPv4(ipv4_template), hexsuffix),
+           network.generate_host(ip.IPv6(ipv6_template), hexsuffix)
+end
+
 function network.eui64(mac)
     local function flip_7th_bit(x) return utils.hex(bit.bxor(tonumber(x, 16), 2)) end
 
