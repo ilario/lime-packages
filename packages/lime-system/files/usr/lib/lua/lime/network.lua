@@ -62,8 +62,8 @@ function network.generate_address(p, n)
     local id = n
     local m4, m5, m6 = node_id()
     local n1, n2, n3 = network_id()
-    local ipv4_template = assert(uci:get("lime", "network", "ipv4_net"))
-    local ipv6_template = assert(uci:get("lime", "network", "ipv6_net"))
+    local ipv4_template = config.get("network", "main_ipv4_address")
+    local ipv6_template = config.get("network", "main_ipv6_address")
 
     ipv6_template = ipv6_template:gsub("N1", hex(n1)):gsub("N2", hex(n2)):gsub("N3", hex(n3))
     ipv4_template = ipv4_template:gsub("N1", n1):gsub("N2", n2):gsub("N3", n3)
