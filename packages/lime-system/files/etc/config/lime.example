@@ -29,7 +29,7 @@ config lime network
 	list protocols anygw
 	list protocols batadv:%N1                                              # Parametrizable with %Nn (which depends from ap_ssid), note that this will range between 16 and 272
 	list protocols bmx6:13
-#	list protocols olsr:14
+#	list protocols olsr:14                                                 # For using OLSR without vlan set olsr:0
 #	list protocols olsr6:15
 #	list resolvers 8.8.8.8                                                 # DNS servers node will use
 #	list resolvers 2001:4860:4860::8844
