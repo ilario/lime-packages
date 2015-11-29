@@ -48,19 +48,18 @@ function olsr.setup_interface(ifname, args)
 
 	if vlanId ~= '0' then
 		owrtInterfaceName, linux802adIfName, owrtDeviceName = network.createVlanIface(ifname, vlanId, nameSuffix, vlanProto)
-		local macAddr = network.get_mac(utils.split(ifname, ".")[1])
-		local ipAddr = { utils.applyMacTemplate16("fc00::%M1:%M2:%M3:%M4:%M5:%M6/128", macAddr) }
-		uci:set("network", owrtInterfaceName, "proto", "static")
-		uci:set("network", owrtInterfaceName, "ip6addr", ipAddr)
 	else
 		owrtInterfaceName = network.limeIfNamePrefix..ifname..nameSuffix.."_if"
 		owrtInterfaceName = owrtInterfaceName:gsub("[^%w_]", "_") -- sanitize uci section name
 		uci:set("network", owrtInterfaceName, "interface")
 		uci:set("network", owrtInterfaceName, "ifname", ifname)
-		uci:set("network", owrtInterfaceName, "proto", "none")
 		uci:set("network", owrtInterfaceName, "auto", "1")
 	end
 
+	local macAddr = network.get_mac(utils.split(ifname, ".")[1])
+	local ipAddr = { utils.applyMacTemplate16("fc00::%M1:%M2:%M3:%M4:%M5:%M6/128", macAddr) }
+	uci:set("network", owrtInterfaceName, "proto", "static")
+	uci:set("network", owrtInterfaceName, "ip6addr", ipAddr)
 	uci:save("network")
 
 	uci:set("olsrd6", owrtInterfaceName, "Interface")
