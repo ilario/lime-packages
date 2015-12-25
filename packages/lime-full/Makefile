@@ -27,7 +27,7 @@ define Package/$(PKG_NAME)
 		+lime-webui +luci-app-batman-adv +luci-app-bmx6 \
 		+lime-map-agent \
 		+lime-debug \
-		+lime-hwd-openwrt-wan +bmx6-auto-gw-mode
+		+lime-hwd-openwrt-wan +bmx6-auto-gw-mode +batman-adv-auto-gw-mode
 endef
 
 define Package/$(PKG_NAME)/description
