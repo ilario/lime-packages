@@ -1,11 +1,13 @@
 #!/usr/bin/lua
 
-local ap = {}
+local apbackbone = {}
 
-ap.wifi_mode="ap"
+apbackbone.wifi_mode="ap"
 
-function ap.setup_radio(radio, args)
-	return wireless.createBaseWirelessIface(radio, ap.wifi_mode, "name", args)
+function apbackbone.setup_radio(radio, args)
+--!	checks("table", "?table")
+
+	return wireless.createBaseWirelessIface(radio, apbackbone.wifi_mode, "name", args)
 end
 
-return ap
+return apbackbone
