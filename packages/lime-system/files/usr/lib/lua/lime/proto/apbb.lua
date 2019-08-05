@@ -1,14 +1,14 @@
 #!/usr/bin/lua
 
-local adhoc_mode = require("lime.mode.adhoc")
+local apbb_mode = require("lime.mode.apbb")
 
-local adhoc = {}
+local apbb = {}
 
-function adhoc.configure(args)
+function apbb.configure(args)
 end
 
-function adhoc.setup_interface(ifname, args)
-	if ifname:match("^wlan%d+."..adhoc_mode.wifi_mode) then
+function apbb.setup_interface(ifname, args)
+	if ifname:match("^wlan%d+."..apbb_mode.wifi_mode.."bb$") then
 		local libuci = require "uci"
 		local uci = libuci:cursor()
 
@@ -25,4 +25,4 @@ function adhoc.setup_interface(ifname, args)
 	end
 end
 
-return adhoc
+return apbb
