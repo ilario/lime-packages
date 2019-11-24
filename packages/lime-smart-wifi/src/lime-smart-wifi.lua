@@ -150,7 +150,7 @@ function smart_wifi.run()
         if is5ghz then
             freq = "5ghz"
             has5ghz = true
-            config.set(radioName, "htmode", "HT40")
+            config.set(radioName, "htmode", "HT40-")
 
             for _,d in ipairs(smart_wifi.get_channels(radioName)) do
                 if d.channel == 100 and d.adhoc ~= nil then
