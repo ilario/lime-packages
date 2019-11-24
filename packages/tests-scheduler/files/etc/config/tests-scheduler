@@ -1,0 +1,13 @@
+config probe 'probe'
+	list test 'ip neigh show nud reachable'
+	list test 'ping6 -n -c 2 ff02::1%br-lan | grep "(DUP!)"'
+	list test 'batctl tl | grep "(0x"'
+	option stability 0.95
+	option data_file '/tmp/tests-scheduler-probe-data'
+	option backup_dir '/etc/tests-scheduler'
+	option backup_filename 'tests-scheduler-probe-data-backup'
+	option persist_to_flash true
+config at 'at'
+	option peak_hooks_dir '/etc/tests-scheduler/peakHooks.d'
+	option night_hooks_dir '/etc/tests-scheduler/nightHooks.d'
+
