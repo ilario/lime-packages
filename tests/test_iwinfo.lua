@@ -75,7 +75,7 @@ describe('iwinfo fake tests', function()
 
         assert.are.same({}, iwinfo.nl80211.assoclist('wlan1-apname'))
 
-        local sta = iwinfo.fake.gen_assoc_station("HT20", "HT40", -66, 50, 10000,
+        local sta = iwinfo.fake.gen_assoc_station("HT20", "HT40-", -66, 50, 10000,
                                                   300, 120)
 
         assert.is_false(sta.rx_vht)
@@ -117,7 +117,7 @@ describe('iwinfo fake tests', function()
         uci:set('wireless', 'radio0', 'channel', '4')
         uci:set('wireless', 'radio0', 'hwmode', '11a')
         uci:set('wireless', 'radio0', 'macaddr', '01:23:45:67:89:AB')
-        uci:set('wireless', 'radio0', 'htmpde', 'HT40')
+        uci:set('wireless', 'radio0', 'htmpde', 'HT40-')
         uci:set('wireless', 'radio0', 'disabled', '0')
 
         uci:set('wireless', 'wlan0', 'wifi-iface')

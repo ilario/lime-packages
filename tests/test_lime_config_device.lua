@@ -64,8 +64,8 @@ describe('LiMe Config tests', function()
 		assert.is.equal('157', uci:get('wireless', 'radio2', 'channel'))
 
 		assert.is.equal('HT20', uci:get('wireless', 'radio0', 'htmode'))
-		assert.is.equal('HT40', uci:get('wireless', 'radio1', 'htmode'))
-		assert.is.equal('HT40', uci:get('wireless', 'radio2', 'htmode'))
+		assert.is.equal('HT40-', uci:get('wireless', 'radio1', 'htmode'))
+		assert.is.equal('HT40-', uci:get('wireless', 'radio2', 'htmode'))
 
 		assert.is.equal('100', uci:get('wireless', 'radio0', 'distance'))
 		assert.is.equal('1000', uci:get('wireless', 'radio1', 'distance'))

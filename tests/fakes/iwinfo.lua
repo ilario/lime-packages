@@ -7,7 +7,7 @@ OP_MODES = {
     "WDS", "Mesh Point", "P2P Client", "P2P Go"
 }
 
-HT_MODES = {"HT20", "HT40", "VHT20", "VHT40", "VHT80", "VHT80+80", "VHT160"}
+HT_MODES = {"NOHT", "HT20", "HT40+", "HT40-", "VHT20", "VHT40", "VHT80", "VHT80+80", "VHT160"}
 
 iwinfo.fake._scanlists = {}
 iwinfo.fake._channels = {}
@@ -70,8 +70,8 @@ function iwinfo.fake.gen_assoc_station(rx_ht_mode, tx_ht_mode, signal, quality, 
     local utils = require("lime.utils")
 
     -- VHT modes not yet supported
-    assert(utils.has_value({"HT20", "HT40"}, rx_ht_mode))
-    assert(utils.has_value({"HT20", "HT40"}, tx_ht_mode))
+    assert(utils.has_value({"HT20", "HT40-"}, rx_ht_mode))
+    assert(utils.has_value({"HT20", "HT40-"}, tx_ht_mode))
 
     local rx_vht = false
     local tx_vht = false
@@ -81,12 +81,12 @@ function iwinfo.fake.gen_assoc_station(rx_ht_mode, tx_ht_mode, signal, quality, 
     local tx_mhz = 20
     local tx_40mhz = false
 
-    if rx_ht_mode == "HT40" then
+    if rx_ht_mode == "HT40-" or rx_ht_mode == "HT40+" then
         rx_ht = true
         rx_mhz = 40
     end
 
-    if tx_ht_mode == "HT40" then
+    if tx_ht_mode == "HT40-" or tx_ht_mode == "HT40+" then
         tx_ht = true
         tx_40mhz = true
         tx_mhz = 40
