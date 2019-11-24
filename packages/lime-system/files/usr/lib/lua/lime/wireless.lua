@@ -132,7 +132,7 @@ function wireless.configure()
 				freqSuffix = "_5ghz"
 				ignoredSuffix = "_2ghz"
 				distance = options["distance"..freqSuffix] or options["distance"] or 1000
-				htmode = options["htmode"..freqSuffix] or options["htmode"] or "HT40"
+				htmode = options["htmode"..freqSuffix] or options["htmode"] or "HT40-"
 			else
 				freqSuffix = "_2ghz"
 				ignoredSuffix = "_5ghz"
