@@ -93,6 +93,7 @@ function anygw.configure(args)
 	uci:set("dhcp", owrtInterfaceName, "dhcp_option", { "option:mtu,"..anygw.SAFE_CLIENT_MTU } )
 	uci:set("dhcp", owrtInterfaceName, "force", "1")
 
+	--! useing host-record to declare own DNS entries (and not dnsmasq address as it wildcards subdomains)
 	uci:set("dhcp", "anygw_dns", "hostrecord")
 	uci:set("dhcp", "anygw_dns", "name", {"anygw", "thisnode.info", "minodo.info"})
 	uci:set("dhcp", "anygw_dns", "ip", anygw_ipv4:host():string() .. "," .. anygw_ipv6:host():string())
