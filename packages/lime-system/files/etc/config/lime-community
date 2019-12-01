@@ -9,7 +9,15 @@ config lime system
 ### Network general option
 
 config lime network
-
+	list protocols ieee80211s
+	list protocols lan
+	list protocols anygw
+	list protocols bmx6:13
+	list protocols olsr:14
+	list protocols olsr6:15
+	list protocols olsr2:16
+	list protocols babeld:0
+	list protocols bmx7:18
 
 ### WiFi general options
 
