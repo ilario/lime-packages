@@ -30,7 +30,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
   SECTION:=lime
-  CATEGORY:=LibreMesh
+  CATEGORY:=LiMe
   TITLE:=$(LIME_TITLE)
   DEPENDS:=+lime-system $(LIME_DEPENDS)
   VERSION:=$(if $(PKG_VERSION),$(PKG_VERSION),$(PKG_SRC_VERSION))
