@@ -47,8 +47,14 @@ function lan.setup_interface(ifname, args)
 	if ifname:match(network.protoVlanSeparator.."%d+$") then return end
 
 	local uci = config.get_uci_cursor()
+	local oldIfs = {}
 	local bridgedIfs = {}
-	local oldIfs = uci:get("network", "lan", "ifname") or {}
+	local is_dsa = utils.is_dsa()
+	if is_dsa then
+		local oldIfs = uci:get("network", "@device[0]", "ports") or {}
+	else
+		local oldIfs = uci:get("network", "lan", "ifname") or {}
+	end
 	if type(oldIfs) == "string" then oldIfs = utils.split(oldIfs, " ") end
 	for _,iface in pairs(oldIfs) do
 		if iface ~= ifname then
@@ -56,7 +62,11 @@ function lan.setup_interface(ifname, args)
 		end
 	end
 	table.insert(bridgedIfs, ifname)
-	uci:set("network", "lan", "ifname", bridgedIfs)
+	if is_dsa then
+		uci:set("network", "@device[0]", "ports", bridgedIfs)
+	else
+		uci:set("network", "lan", "ifname", bridgedIfs)
+	end
 	uci:save("network")
 end
 
