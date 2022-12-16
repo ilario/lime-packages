@@ -51,9 +51,9 @@ function lan.setup_interface(ifname, args)
 	local bridgedIfs = {}
 	local is_dsa = utils.is_dsa()
 	if is_dsa then
-		local oldIfs = uci:get("network", "@device[0]", "ports") or {}
+		oldIfs = uci:get("network", "@device[0]", "ports") or {}
 	else
-		local oldIfs = uci:get("network", "lan", "ifname") or {}
+		oldIfs = uci:get("network", "lan", "ifname") or {}
 	end
 	if type(oldIfs) == "string" then oldIfs = utils.split(oldIfs, " ") end
 	for _,iface in pairs(oldIfs) do
