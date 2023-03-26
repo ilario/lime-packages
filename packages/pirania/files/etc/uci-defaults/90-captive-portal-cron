@@ -6,7 +6,5 @@ unique_append()
 }
 
 unique_append \
-	'*/10 * * * * ((captive-portal update &> /dev/null)&)'\
+	'*/10 * * * * ((captive-portal update &> /dev/null)&)' \
 	/etc/crontabs/root
-
-exit 0
