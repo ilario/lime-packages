@@ -1,12 +1,10 @@
-include $(TOPDIR)/libremesh.mk
-
-PKG_NAME:=lime-hwd-watchcat
+include ../../libremesh.mk
 
 define Package/$(PKG_NAME)
-  SECTION:=LibreMesh
+  SECTION:=lime
   CATEGORY:=LibreMesh
-  TITLE:=Watchcat HWD defaults 
-  DEPENDS:=+lime-system +lua +libuci-lua +watchcat
+  TITLE:=Watchcat LibreMesh configuration interface
+  DEPENDS:=+lime-system +lua +watchcat
   PKGARCH:=all
 endef
 
