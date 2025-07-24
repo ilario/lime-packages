@@ -4,7 +4,7 @@ define Package/$(PKG_NAME)
   SECTION:=lime
   CATEGORY:=LibreMesh
   TITLE:=odhcpd leases module for shared-state
-  DEPENDS:=+lua +luci-lib-jsonc +shared-state-async +odhcpd
+  DEPENDS:=+lua +luci-lib-jsonc +shared-state-async +odhcpd-ipv6only
   PKGARCH:=all
 endef
 
