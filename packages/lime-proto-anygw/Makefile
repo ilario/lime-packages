@@ -11,7 +11,7 @@ define Package/$(PKG_NAME)
 	CATEGORY:=LibreMesh
 	MAINTAINER:=Gioacchino Mazzurco <gio@eigenlab.org>
 	URL:=http://libremesh.org
-	DEPENDS:=+dnsmasq-dhcpv6 +kmod-nft-bridge +libuci-lua \
+	DEPENDS:=+kmod-nft-bridge +libuci-lua \
 		+lime-system +lua +kmod-macvlan \
 		+shared-state +shared-state-dnsmasq_leases \
 		+luci-lib-nixio +firewall4
