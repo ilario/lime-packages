@@ -449,7 +449,7 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 	--! because only alphanumeric and underscores are allowed
 	local sanitizedIfname = network.sanitizeIfaceName(linuxBaseIfname)
 	local owrtDeviceName = sanitizedIfname
-	local linux802adIfName = linuxBaseIfname
+	local linuxVlanIfName = linuxBaseIfname
 
 	local uci = config.get_uci_cursor()
 
@@ -465,11 +465,11 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 
 		--! Do not use . as separator as this will make netifd create an 802.1q interface anyway
 		--! and sanitize linuxBaseIfName because it can contain dots as well (i.e. switch ports)
-		linux802adIfName = linux802adIfName:gsub("[^%w-]", "-")..network.protoVlanSeparator..vlanId
+		linuxVlanIfName = linuxVlanIfName:gsub("[^%w-]", "-")..network.protoVlanSeparator..vlanId
 
 		uci:set("network", owrtDeviceName, "device")
 		uci:set("network", owrtDeviceName, "type", vlanProtocol)
-		uci:set("network", owrtDeviceName, "name", linux802adIfName)
+		uci:set("network", owrtDeviceName, "name", linuxVlanIfName)
 		--! This is ifname also on current OpenWrt
 		uci:set("network", owrtDeviceName, "ifname", linuxBaseIfname)
 		uci:set("network", owrtDeviceName, "vid", vlanId)
@@ -477,14 +477,14 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 
 	uci:save("network")
 
-	return sanitizedIfname, linux802adIfName, owrtDeviceName
+	return sanitizedIfname, linuxVlanIfName, owrtDeviceName
 end
 
 function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
 	openwrtNameSuffix = openwrtNameSuffix or ""
 	vid = tonumber(vid)
 
-	local sanitizedIfname, linux802adIfName, owrtDeviceName =
+	local sanitizedIfname, linuxVlanIfName, owrtDeviceName =
 		network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
 
 	local uci = config.get_uci_cursor()
@@ -502,13 +502,13 @@ function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanPr
 	--! In case of wifi interface not using vlan (vid == 0) avoid to set
 	--! ifname in network because it is already set in wireless, because
 	--! setting ifname on both places cause a netifd race condition
-	if vid ~= 0 or not linux802adIfName:match("^wlan") then
-		uci:set("network", owrtInterfaceName, "device", linux802adIfName)
+	if vid ~= 0 or not linuxVlanIfName:match("^wlan") then
+		uci:set("network", owrtInterfaceName, "device", linuxVlanIfName)
 	end
 
 	uci:save("network")
 
-	return owrtInterfaceName, linux802adIfName, owrtDeviceName
+	return owrtInterfaceName, linuxVlanIfName, owrtDeviceName
 end
 
 function network.createMacvlanIface(baseIfname, linuxName, argsDev, argsIf)
