@@ -440,7 +440,7 @@ function network.createStaticIface(linuxBaseIfname, openwrtNameSuffix, ipAddr, g
 	uci:save("network")
 end
 
-function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
+function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
 	vlanProtocol = vlanProtocol or "8021ad"
 	openwrtNameSuffix = openwrtNameSuffix or ""
 	vid = tonumber(vid)
@@ -452,8 +452,6 @@ function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanPr
 	local linux802adIfName = linuxBaseIfname
 
 	local uci = config.get_uci_cursor()
-
-	owrtInterfaceName = owrtInterfaceName..openwrtNameSuffix.."_if"
 
 	if vid ~= 0 then
 		local vlanId = tostring(vid)
@@ -476,6 +474,21 @@ function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanPr
 		uci:set("network", owrtDeviceName, "ifname", linuxBaseIfname)
 		uci:set("network", owrtDeviceName, "vid", vlanId)
 	end
+
+	uci:save("network")
+
+	return owrtInterfaceName, linux802adIfName, owrtDeviceName
+end
+
+function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
+	openwrtNameSuffix = openwrtNameSuffix or ""
+	vid = tonumber(vid)
+	
+	local owrtInterfaceName, linux802adIfName, owrtDeviceName = network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
+	
+	local uci = config.get_uci_cursor()
+
+	owrtInterfaceName = owrtInterfaceName..openwrtNameSuffix.."_if"
 
 	uci:set("network", owrtInterfaceName, "interface")
 	local proto = "none"
