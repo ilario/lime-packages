@@ -8,6 +8,8 @@
 --! SPDX-License-Identifier: AGPL-3.0-only
 
 local libuci = require("uci")
+local network = require("lime.network")
+local utils = require("lime.utils")
 
 wan = {}
 
@@ -25,6 +27,18 @@ end
 
 function wan.setup_interface(ifname, args)
 	local uci = libuci:cursor()
+	local vlanId = tostring(args[2] or "0")
+
+	if vlanId ~= "0" then
+		local vlanProto = args[3] or "8021q"
+		local nameSuffix = args[4] or "_wan"
+		local _, linuxVlanIfName, _ = network.createVlanDevice(ifname, vlanId, nameSuffix, vlanProto)
+		ifname = linuxVlanIfName
+		utils.log("lime.proto.wan.setup_interface(%s with VLAN ID %s, ...)", ifname, vlanId)
+	else
+		utils.log("lime.proto.wan.setup_interface(%s, ...)", ifname)
+	end
+
 	uci:set("network", "wan", "device", ifname)
 	uci:save("network")
 
