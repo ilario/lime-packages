@@ -447,8 +447,8 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 	
 	--! sanitize passed linuxBaseIfName for constructing uci section name
 	--! because only alphanumeric and underscores are allowed
-	local owrtInterfaceName = network.sanitizeIfaceName(linuxBaseIfname)
-	local owrtDeviceName = owrtInterfaceName
+	local sanitizedIfname = network.sanitizeIfaceName(linuxBaseIfname)
+	local owrtDeviceName = sanitizedIfname
 	local linux802adIfName = linuxBaseIfname
 
 	local uci = config.get_uci_cursor()
@@ -457,7 +457,7 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 		local vlanId = tostring(vid)
 		--! sanitize passed linuxBaseIfName for constructing uci section name
 		--! because only alphanumeric and underscores are allowed
-		owrtDeviceName = network.sanitizeIfaceName(linuxBaseIfname)..openwrtNameSuffix.."_dev"
+		owrtDeviceName = owrtDeviceName..openwrtNameSuffix.."_dev"
 
 		if linuxBaseIfname:match("^wlan") then
 			linuxBaseIfname = "@"..network.sanitizeIfaceName(linuxBaseIfname)
@@ -466,7 +466,7 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 		--! Do not use . as separator as this will make netifd create an 802.1q interface anyway
 		--! and sanitize linuxBaseIfName because it can contain dots as well (i.e. switch ports)
 		linux802adIfName = linux802adIfName:gsub("[^%w-]", "-")..network.protoVlanSeparator..vlanId
-		
+
 		uci:set("network", owrtDeviceName, "device")
 		uci:set("network", owrtDeviceName, "type", vlanProtocol)
 		uci:set("network", owrtDeviceName, "name", linux802adIfName)
@@ -477,18 +477,19 @@ function network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanP
 
 	uci:save("network")
 
-	return owrtInterfaceName, linux802adIfName, owrtDeviceName
+	return sanitizedIfname, linux802adIfName, owrtDeviceName
 end
 
 function network.createVlanIface(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
 	openwrtNameSuffix = openwrtNameSuffix or ""
 	vid = tonumber(vid)
-	
-	local owrtInterfaceName, linux802adIfName, owrtDeviceName = network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
-	
+
+	local sanitizedIfname, linux802adIfName, owrtDeviceName =
+		network.createVlanDevice(linuxBaseIfname, vid, openwrtNameSuffix, vlanProtocol)
+
 	local uci = config.get_uci_cursor()
 
-	owrtInterfaceName = owrtInterfaceName..openwrtNameSuffix.."_if"
+	local owrtInterfaceName = sanitizedIfname..openwrtNameSuffix.."_if"
 
 	uci:set("network", owrtInterfaceName, "interface")
 	local proto = "none"
