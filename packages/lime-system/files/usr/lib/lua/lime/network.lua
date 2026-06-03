@@ -55,6 +55,27 @@ function network.get_own_macs(interface_filter)
 	return result
 end
 
+function network.interface_exists(ifname)
+	return fs.lstat("/sys/class/net/"..ifname) and true or false
+end
+
+--! Extract network.<role>.device or the first network.<role>.ports if found in /etc/board.json
+function network.primary_interface_from_board_by_role(role)
+	local board = utils.getBoardAsTable()
+	local ifname = nil
+	if board["network"] and board["network"][role] then
+		ifname = board["network"][role]["device"]
+		if ifname == nil or ifname == "" then
+			local ports = board["network"][role]["ports"]
+			if ports == nil or ports == "" or next(ports) == nil then
+				print("network.primary_interface() could not determine ifname from "..role.." in /etc/board.json!" )
+			else
+				ifname = ports[1]
+			end
+		end
+	end
+	return ifname
+end
 
 function network.assert_interface_exists(ifname)
 	assert( ifname ~= nil and ifname ~= "",
@@ -66,9 +87,32 @@ end
 
 function network.primary_interface()
 	local ifname = config.get("network", "primary_interface", "eth0")
+
+	--! Check if the autogen primary_interface or the fallback 'eth0' exists
+	--! Force a fallback to 'auto' otherwise
+	if ifname ~= "auto" then
+		if not network.interface_exists(ifname) then
+			print("network.primary_interface() "..ifname.." doesn't exists! Fallback to 'auto'.")
+			ifname = "auto"
+		end
+	end
+
 	if ifname == "auto" then
-		local board = utils.getBoardAsTable()
-		ifname = board['network']['lan']['device']
+		--! Scan the role network.lan from /etc/board.json
+		ifname = network.primary_interface_from_board_by_role("lan")
+
+		--! Scan other roles
+		if ifname == nil or ifname == "" then
+			local board = utils.getBoardAsTable()
+			for role, role_table in pairs(board["network"] or {}) do
+				if role ~= "lan" then
+					ifname = network.primary_interface_from_board_by_role(role)
+					if ifname ~= nil and ifname ~= "" then
+						break
+					end
+				end
+			end
+		end
 	end
 	network.assert_interface_exists(ifname)
 	return ifname
