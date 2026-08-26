@@ -68,9 +68,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/shared-state-async $(1)/usr/bin/
 	$(CP) ./files/* $(1)/
-
-	# TODO: Remove this line once discovery is reimplemented in C++
-	$(CP) ../shared-state/files/usr/bin/shared-state-get_candidates_neigh $(1)/usr/bin/shared-state-async-discover
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
