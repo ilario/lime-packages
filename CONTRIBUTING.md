@@ -174,4 +174,4 @@ changes and indicate that the PR is ready to be merged.
 
 ### More Information
 
-For more information, please see [Collaborating on projects using issues and pull requests](https://help.github.com/categories/collaborating-on-projects-using-issues-and-pull-requests/) in the GitHub help guide.
+For more information, please see [Quickstart for pull requests](https://docs.github.com/en/pull-requests/get-started/pull-request-quickstart) in the GitHub documentation.
