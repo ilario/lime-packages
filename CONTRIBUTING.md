@@ -5,6 +5,40 @@ email, or any other method before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+
+## How to use AI to contribute
+
+Artificial Intelligence tools, like LLM and coding assistants, can be used for contributing to the
+LibreMesh project but we ask you to respect the following requirements:
+
+### Be honest and transparent, tell us how much you used AI for your contribution
+
+It is not the same to review a human-written contribution or a LLM-written one.
+Humans make typos and small mistakes, while LLM make conceptual errors, useless tests and
+duplicated code.
+For helping the code review process, we ask you to disclose if, how much and which AI-LLM you used
+(e.g., "I used XYZ for writing the code but then I checked every detail myself").
+
+### Make sure you learn something
+
+LibreMesh is about empowering communities giving them an easy to use tool for creating mesh
+networks. But it is also about allowing users to get empowered becoming developers.
+When you contribute, make sure you understand what you are doing and learn something new.
+If you cannot understand what AI wrote, ask for help in the
+[LibreMesh communication channels](https://github.com/libremesh/lime-packages/tree/master#get-in-touch-with-libremesh-community).
+
+### Be critical, check the code with your own brain
+
+As mentioned above, LLM can make conceptual errors and write useless or duplicate code.
+Please use your own judgment and properly check the code before submitting it for review.
+
+### Take responsibility
+
+When you submit some code, we will assume that you thoroughly checked the code and tested it
+in a virtual machine or on a real device. If AI makes bad code, either improve it yourself
+or avoid contributing it.
+
+
 ## Forks and Pull Requests
 
 Development on lime-packages follows the Fork and Pull Request method popularized by GitHub:
