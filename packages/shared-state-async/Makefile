@@ -43,7 +43,7 @@ define Package/$(PKG_NAME)
 	# only package to use it
 	# TODO: Remove dependency on shared-state-get_candidates_neigh once
 	# discovery is reimplemented in C++
-	DEPENDS:=+libstdcpp +shared-state
+	DEPENDS:=+libstdcpp +shared-state +lime-utils
 endef
 
 define Package/$(PKG_NAME)/description
