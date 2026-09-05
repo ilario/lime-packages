@@ -8,8 +8,10 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## How to use AI to contribute
 
-Artificial Intelligence tools, like LLM and coding assistants, can be used for contributing to the
-LibreMesh project but we ask you to respect the following requirements:
+We do not explicitly encourage the employment of Artificial Intelligence tools, like LLM and
+coding assistants. But we do not forbid it neither, and we will not discard contributions made
+using AI-LLM tools. You can use such tools for contributing to the LibreMesh project respecting
+the following requirements:
 
 ### Be honest and transparent, tell us how much you used AI for your contribution
 
@@ -30,13 +32,14 @@ If you cannot understand what AI wrote, ask for help in the
 ### Be critical, check the code with your own brain
 
 As mentioned above, LLM can make conceptual errors and write useless or duplicate code.
-Please use your own judgment and properly check the code before submitting it for review.
+Please use your own judgment and properly check the code. Then execute the code on your host or
+router or virtual machine before submitting it for review.
 
 ### Take responsibility
 
-When you submit some code, we will assume that you thoroughly checked the code and tested it
+When you submit some code, we will assume that you thoroughly checked and tested it
 in a virtual machine or on a real device. If AI makes bad code, either improve it yourself
-or avoid contributing it.
+or avoid contributing it. Respect the opinion of the reviewers even if AI disagrees.
 
 
 ## Forks and Pull Requests
